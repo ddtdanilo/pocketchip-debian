@@ -1,0 +1,11 @@
+
+PocketCHIP running Debian 10 (buster) - community build
+https://github.com/ddtdanilo/pocketchip-debian
+
+  * Default login is chip / chip. Change it now:  passwd
+  * SSH is enabled. FTP and VNC are installed but OFF. Turn them on with:
+        sudo pocketchip-services enable-vnc
+        sudo pocketchip-services enable-ftp
+  * Wi-Fi:  sudo nmcli dev wifi connect "<ssid>" password "<password>"
+  * Run "sudo apt update" before installing packages.
+

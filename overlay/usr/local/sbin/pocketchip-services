@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# pocketchip-services - toggle the optional network services of this image.
+#
+# FTP and VNC ship installed but disabled: both send credentials in clear text
+# on the local network, so they are opt-in.
+set -euo pipefail
+
+usage() {
+    cat <<USAGE
+Usage: pocketchip-services <command>
+
+Commands:
+  status         show the state of ssh, vsftpd and x11vnc
+  enable-ftp     start vsftpd now and at every boot (plain-text FTP)
+  disable-ftp    stop vsftpd and do not start it at boot
+  enable-vnc     ask for a VNC password, then start x11vnc now and at boot
+  disable-vnc    stop x11vnc and do not start it at boot
+USAGE
+}
+
+need_root() {
+    if [ "$(id -u)" -ne 0 ]; then
+        echo "error: run this with sudo" >&2
+        exit 1
+    fi
+}
+
+state() {
+    printf '%-8s enabled=%-9s active=%s\n' "$1" \
+        "$(systemctl is-enabled "$1" 2>/dev/null || true)" \
+        "$(systemctl is-active "$1" 2>/dev/null || true)"
+}
+
+case "${1:-}" in
+    status)
+        state ssh
+        state vsftpd
+        state x11vnc
+        ;;
+    enable-ftp)
+        need_root
+        systemctl enable --now vsftpd
+        echo "FTP is on (port 21). Prefer SFTP (port 22) for anything sensitive."
+        ;;
+    disable-ftp)
+        need_root
+        systemctl disable --now vsftpd
+        ;;
+    enable-vnc)
+        need_root
+        read -rsp "VNC password (only the first 8 characters are used): " pw
+        echo
+        read -rsp "Repeat it: " pw2
+        echo
+        if [ -z "$pw" ] || [ "$pw" != "$pw2" ]; then
+            echo "error: empty password or the two entries differ" >&2
+            exit 1
+        fi
+        x11vnc -storepasswd "$pw" /etc/x11vnc.pass >/dev/null
+        chmod 600 /etc/x11vnc.pass
+        systemctl enable --now x11vnc
+        echo "VNC is on (port 5900), mirroring the PocketCHIP screen."
+        ;;
+    disable-vnc)
+        need_root
+        systemctl disable --now x11vnc
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+esac

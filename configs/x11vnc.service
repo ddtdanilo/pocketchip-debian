@@ -1,0 +1,11 @@
+[Unit]
+Description=x11vnc (PocketCHIP screen)
+After=display-manager.service network.target
+
+[Service]
+ExecStart=/usr/bin/x11vnc -display :0 -auth guess -forever -shared -noxdamage -rfbauth /etc/x11vnc.pass -rfbport 5900
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

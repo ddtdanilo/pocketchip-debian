@@ -1,0 +1,130 @@
+--- a/home/chip/.config/awesome/rc.lua
++++ b/home/chip/.config/awesome/rc.lua
+@@ -1,11 +1,12 @@
+ -- Standard awesome library
+-require("awful")
++gears = require("gears")
++awful = require("awful")
+ require("awful.autofocus")
+ require("awful.rules")
+ -- Theme handling library
+-require("beautiful")
++beautiful = require("beautiful")
+ -- Notification library
+-require("naughty")
++naughty = require("naughty")
+ 
+ local USE_DBG = false
+ dbg = function (msg)
+@@ -34,7 +35,7 @@
+ -- Handle runtime errors after startup
+ do
+     local in_error = false
+-    awesome.add_signal("debug::error", function (err)
++    awesome.connect_signal("debug::error", function (err)
+         if USE_DBG then
+             -- Make sure we don't go into an endless error loop
+             if in_error then return end
+@@ -81,7 +82,7 @@
+         client:kill()
+         home_screen = {}
+     end
+-    awful.util.spawn_with_shell("pocket-home")
++    awful.spawn.with_shell("pocket-home")
+ end
+ 
+ focus_home_screen = function ()
+@@ -97,7 +98,7 @@
+ 
+ hide_mouse_cursor = function ()
+     -- hide mouse pointer on root window
+-    awful.util.spawn_with_shell("xsetroot -cursor $HOME/.config/awesome/blank_ptr.xbm $HOME/.config/awesome/blank_ptr.xbm")
++    awful.spawn.with_shell("xsetroot -cursor $HOME/.config/awesome/blank_ptr.xbm $HOME/.config/awesome/blank_ptr.xbm")
+ end
+ -- }}}
+ 
+@@ -145,21 +146,21 @@
+ -- }}}
+ 
+ -- {{{ Mouse bindings
+-root.buttons(awful.util.table.join(
++root.buttons(gears.table.join(
+     awful.button({ }, 4, awful.tag.viewnext),
+     awful.button({ }, 5, awful.tag.viewprev)
+ ))
+ -- }}}
+ 
+ -- {{{ Key bindings
+-local globalkeys = awful.util.table.join(
++local globalkeys = gears.table.join(
+     awful.key({ }                  , "XF86PowerOff", focus_home_screen),
+     awful.key({ modkey,           }, "Tab", focus_next_client),
+     awful.key({ "Control",        }, "Tab", focus_next_client),
+-    awful.key({ modkey,           }, "Return", function () awful.util.spawn("dmenu_run", false) end)
++    awful.key({ modkey,           }, "Return", function () awful.spawn("dmenu_run") end)
+ )
+ 
+-local clientkeys = awful.util.table.join(
++local clientkeys = gears.table.join(
+     awful.key({ "Control"         }, "q", 
+         function (c)
+             if c ~= home_screen.client then
+@@ -174,12 +175,12 @@
+     keynumber = math.min(9, math.max(#tags[s], keynumber));
+ end
+ 
+-local clientbuttons = awful.util.table.join(
++local clientbuttons = gears.table.join(
+     awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
+     -- left click and mode allows you to move windows
+     awful.button({ modkey }, 1, awful.mouse.client.move),
+     -- right click when holding mod
+-    awful.button({ "Control" }, 1, function (c) awful.util.spawn("xdotool click 3", false) end))
++    awful.button({ "Control" }, 1, function (c) awful.spawn("xdotool click 3") end))
+ 
+ -- Set global keys
+ root.keys(globalkeys)
+@@ -200,17 +201,17 @@
+ -- {{{ Signals
+ -- Signal function to execute when a new client appears.
+ 
+-client.add_signal("focus", function (c)
++client.connect_signal("focus", function (c)
+   hide_mouse_cursor()
+ end)
+ 
+-client.add_signal("unfocus", function (c)
++client.connect_signal("unfocus", function (c)
+   if c == onboard.client then
+-      awful.util.spawn("xdotool search --name ahoy windowactivate", false)
++      awful.spawn("xdotool search --name ahoy windowactivate")
+   end
+ end)
+ 
+-client.add_signal("manage", function (c, startup)
++client.connect_signal("manage", function (c, startup)
+     -- match homescreen by pid
+     if c.name == "pocket-home" then
+         home_screen.client = c
+@@ -233,7 +234,7 @@
+ -- FIXME: make sure to ignore if we don't have a client, 
+ -- apparently it's possible for unmanage to be called before manage
+ -- when certain applications first open.
+-client.add_signal("unmanage", function (c)
++client.connect_signal("unmanage", function (c)
+     -- match homescreen
+     if c.name == "pocket-home" then
+         home_screen = {}
+@@ -248,10 +249,10 @@
+ hide_mouse_cursor()
+ 
+ -- map the keyboard
+-awful.util.spawn_with_shell("/usr/sbin/pocketchip-load")
++awful.spawn.with_shell("/usr/sbin/pocketchip-load")
+ 
+ -- launch onboarding
+-awful.util.spawn_with_shell("onboard $HOME/.config/onboard /usr/share/pocketchip-onboard/")
++awful.spawn.with_shell("onboard $HOME/.config/onboard /usr/share/pocketchip-onboard/")
+ 
+ -- launch home screen
+ launch_home_screen()

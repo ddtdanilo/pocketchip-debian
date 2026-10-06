@@ -1,0 +1,10 @@
+# Build output and large artifacts live in GitHub Releases, not in git.
+dist/
+*.tar
+*.tar.gz
+*.ubi
+*.ubi.sparse
+*.ubifs
+# Local scratch
+.DS_Store
+*.log

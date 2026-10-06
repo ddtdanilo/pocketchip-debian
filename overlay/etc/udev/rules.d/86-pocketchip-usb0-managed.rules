@@ -1,0 +1,5 @@
+# Debian 10's 85-nm-unmanaged.rules marks every USB gadget interface as
+# unmanaged (DEVTYPE=="gadget"). On the PocketCHIP the gadget Ethernet (usb0)
+# is how you reach the device with just the USB cable, so manage it again.
+# NetworkManager then uses the "usb0_linklocal" profile (IPv4 link-local).
+SUBSYSTEM=="net", KERNEL=="usb0", ENV{NM_UNMANAGED}="0"
