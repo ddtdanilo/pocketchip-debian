@@ -15,8 +15,9 @@ All notable changes to this project are documented here. The format follows
 - `docs/gpu.md`.
 
 ### Fixed
-- README no longer says NTC's PICO-8 package can be reinstalled; it needs
-  `libcurl3`, which Debian 10 does not have.
+- PICO-8: documented how to install NTC's package on Debian 10. It only
+  declares `libcurl3`; the binary runs with `libcurl4`. The README's earlier
+  instructions would have failed.
 
 ## [0.1.0] - 2026-10-06
 

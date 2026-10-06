@@ -32,9 +32,10 @@ The two launcher icons that started PICO-8 and SunVox are removed. The kernel
 Mali module (`chip-mali-modules`, GPL) is kept. The Mali userspace library is
 downloaded from NTC's repository by [`scripts/enable-gpu.sh`](scripts/enable-gpu.sh)
 on your device, only after you accept ARM's licence; see [`docs/gpu.md`](docs/gpu.md).
-For SunVox, take the `.deb` from NTC's original image (see
-[`docs/flashing.md`](docs/flashing.md#getting-the-stock-image)). NTC's PICO-8
-package does not install on Debian 10 (it depends on `libcurl3`).
+For SunVox and PICO-8, take the `.deb` from NTC's original image (see
+[`docs/flashing.md`](docs/flashing.md#getting-the-stock-image)). PICO-8's
+package needs a one-line dependency fix first, see
+[`docs/known-issues.md`](docs/known-issues.md#pico-8).
 
 ## Fetched on the device by optional scripts (not distributed)
 

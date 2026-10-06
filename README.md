@@ -164,9 +164,11 @@ screen and the Wi-Fi chip; newer releases were not attempted.
 `sudo scripts/enable-gpu.sh --accept-arm-eula`. Desktop OpenGL, no: the
 Mali-400 only does OpenGL ES. Details and numbers in [docs/gpu.md](docs/gpu.md).
 
-**Can I get PICO-8 back?** Not with NTC's package: it depends on `libcurl3`,
-which Debian 10 does not have. If you own PICO-8, try the current Raspberry Pi
-build from Lexaloffle (untested here).
+**Can I get PICO-8 back?** Yes, if you have NTC's `chip-pico-8` package (it
+came with every PocketCHIP). It refuses to install only because it declares a
+dependency on `libcurl3`; the program itself runs with Debian 10's `libcurl4`.
+Fix the dependency and install it, see
+[known issues](docs/known-issues.md#pico-8). Verified on the device.
 
 **Will it work on a bare C.H.I.P. (no PocketCHIP case)?** The flasher supports
 both, and the launcher is made for the PocketCHIP's screen and keyboard.
