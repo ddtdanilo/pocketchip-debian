@@ -13,7 +13,7 @@ flashed back and booted.
 | Wi-Fi | Realtek RTL8723BS (`8723bs`), 2.4 GHz only. Connects and comes back after reboot. Verified. Slow and fragile under sustained load, see [networking.md](networking.md). |
 | Battery | Voltage and charge current read correctly through the AXP209. Verified. |
 | Audio input | The codec exposes capture channels (Mic1/Mic2) and records samples. Not verified that a physical microphone is connected. |
-| GPU | The Mali-400 kernel driver loads (`/dev/mali`). The userspace libraries are proprietary and not included, and X runs on `fbdev`, so there is no 3D acceleration. Not verified beyond the driver loading. |
+| GPU | Mali-400. The kernel driver ships in the image and loads (`/dev/mali`). OpenGL ES 2.0 acceleration after running `scripts/enable-gpu.sh`, which downloads ARM's proprietary library: `GL_RENDERER: Mali-400 MP`, about 72 to 83 fps in `tools/gles2-bench`. Verified. See [gpu.md](gpu.md). |
 | Bluetooth | Not verified. |
 | Touch panel | Not verified in this release. |
 | USB Ethernet | `usb0` gadget interface, link-local `169.254.x.x`. Verified with the address set by hand; the udev rule that lets NetworkManager bring it up by itself ships in the image but is not verified on a freshly flashed device. See [networking.md](networking.md). |

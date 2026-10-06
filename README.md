@@ -50,6 +50,7 @@ whether it was verified on hardware.
 | **Packages** | `apt` works (Debian's archive), signatures verified |
 | **Access** | SSH on from the first boot, `chip.local` via mDNS, SFTP |
 | **Optional** | FTP and VNC installed but off; one command to turn them on |
+| **GPU** | OpenGL ES 2.0 on the Mali-400 with one script ([docs/gpu.md](docs/gpu.md)) |
 | **USB** | Serial console and Ethernet over the micro-USB cable, no Wi-Fi needed |
 | **Wi-Fi** | Connects and reconnects on its own |
 | **Rebuildable** | Export, image build and flashing are scripted and documented |
@@ -106,6 +107,7 @@ Then read [docs/first-boot.md](docs/first-boot.md).
 | [Flashing](docs/flashing.md) | Host tools, FEL mode, flashing, troubleshooting |
 | [First boot](docs/first-boot.md) | Accounts, Wi-Fi, SSH/FTP/VNC, `apt` |
 | [Networking](docs/networking.md) | Wi-Fi limits, USB Ethernet, serial console, measured speeds |
+| [GPU acceleration](docs/gpu.md) | Turn on OpenGL ES 2.0 on the Mali-400 |
 | [Building the image](docs/building.md) | Export a device, build the UBI image in Docker |
 | [Upgrading the stock image](docs/upgrade-from-stock.md) | How Debian 8 was taken to Debian 10 |
 | [Hardware notes](docs/hardware.md) | What was verified on the device and what was not |
@@ -120,8 +122,12 @@ readings. Not yet verified on a device flashed with the release image: the
 first-boot steps (SSH key generation, USB Ethernet coming up by itself) and the
 flasher itself.
 
-Not available: **3D acceleration** (the Mali libraries are proprietary and not
-included), **PICO-8** and **SunVox** (proprietary; where to get them is in
+Optional: **GPU acceleration** (OpenGL ES 2.0). ARM's Mali library is
+proprietary, so it is not in the image; `scripts/enable-gpu.sh` downloads it
+from NTC's repository and sets up X for it. Verified on the device, see
+[docs/gpu.md](docs/gpu.md).
+
+Not available: **PICO-8** and **SunVox** (proprietary; see
 [THIRD_PARTY.md](THIRD_PARTY.md)).
 
 Not verified: the **Toshiba 4 GB** image (built the same way, no device to test
@@ -154,9 +160,13 @@ boot ROM, not in the NAND, so a bad flash can be redone from FEL mode.
 device to and validated. The kernel is NTC's 4.4, which is what drives the
 screen and the Wi-Fi chip; newer releases were not attempted.
 
-**Can I get PICO-8 back?** Yes, if you own it: take the package from NTC's
-original image (see [docs/flashing.md](docs/flashing.md#getting-the-stock-image))
-or buy it from Lexaloffle.
+**Does it have GPU acceleration?** OpenGL ES 2.0, yes, after one script:
+`sudo scripts/enable-gpu.sh --accept-arm-eula`. Desktop OpenGL, no: the
+Mali-400 only does OpenGL ES. Details and numbers in [docs/gpu.md](docs/gpu.md).
+
+**Can I get PICO-8 back?** Not with NTC's package: it depends on `libcurl3`,
+which Debian 10 does not have. If you own PICO-8, try the current Raspberry Pi
+build from Lexaloffle (untested here).
 
 **Will it work on a bare C.H.I.P. (no PocketCHIP case)?** The flasher supports
 both, and the launcher is made for the PocketCHIP's screen and keyboard.

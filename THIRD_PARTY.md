@@ -29,10 +29,19 @@ These are proprietary and are not redistributed here:
 - **Mali userspace libraries** (`chip-mali-userspace`: `libMali.so`, EGL, GLES) - ARM proprietary.
 
 The two launcher icons that started PICO-8 and SunVox are removed. The kernel
-Mali module (`chip-mali-modules`, GPL) is kept, but without the userspace
-libraries the GPU is not usable. To get any of the above back, take the `.deb`
-files from NTC's original image (see [`docs/flashing.md`](docs/flashing.md#getting-the-stock-image))
-and install them yourself.
+Mali module (`chip-mali-modules`, GPL) is kept. The Mali userspace library is
+downloaded from NTC's repository by [`scripts/enable-gpu.sh`](scripts/enable-gpu.sh)
+on your device, only after you accept ARM's licence; see [`docs/gpu.md`](docs/gpu.md).
+For SunVox, take the `.deb` from NTC's original image (see
+[`docs/flashing.md`](docs/flashing.md#getting-the-stock-image)). NTC's PICO-8
+package does not install on Debian 10 (it depends on `libcurl3`).
+
+## Fetched on the device by optional scripts (not distributed)
+
+- NTC's `xf86-video-armsoc` X driver (MIT), built from source at a pinned commit
+  by `scripts/enable-gpu.sh`: <https://github.com/nextthingco/xf86-video-armsoc>.
+- ARM's Mali userspace driver r6p0 (`libMali.so`, proprietary ARM EULA), from
+  <https://github.com/NextThingCo/chip-mali-userspace>.
 
 ## Build-time tools (not distributed)
 

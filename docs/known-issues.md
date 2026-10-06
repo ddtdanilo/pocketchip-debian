@@ -5,9 +5,13 @@
   USB Ethernet up by itself) and `scripts/flash.sh` are untested. Reports
   welcome.
 
-- **No GPU acceleration.** The Mali userspace libraries are proprietary and are
-  not shipped. X uses the software `fbdev` driver. Firefox and anything
-  graphical are slow.
+- **No GPU acceleration out of the box.** The Mali userspace library is
+  proprietary and not shipped; X uses the software `fbdev` driver. OpenGL ES 2.0
+  acceleration is one script away, see [gpu.md](gpu.md). Desktop OpenGL and 2D
+  drawing stay in software either way.
+- **PICO-8 cannot simply be reinstalled.** NTC's `chip-pico-8` package depends
+  on `libcurl3`, which Debian 10 does not have; the upgrade to Debian 10 removes
+  it for that reason.
 - **No PICO-8 and no SunVox.** Proprietary, removed from the image. See
   [`THIRD_PARTY.md`](../THIRD_PARTY.md) for where to get them.
 - **`FBIOPUTCMAP: Invalid argument`** is repeated in `/var/log/Xorg.0.log`. It is

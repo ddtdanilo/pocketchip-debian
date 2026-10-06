@@ -6,6 +6,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- `scripts/enable-gpu.sh`: optional OpenGL ES 2.0 acceleration on the Mali-400.
+  Builds NTC's `armsoc` X driver, downloads ARM's Mali library from NTC's
+  repository after the user accepts its licence, and switches X to `armsoc`
+  with DRI2. `--revert` goes back to `fbdev`.
+- `tools/gles2-bench.c`: a small EGL + OpenGL ES 2 benchmark to check it.
+- `docs/gpu.md`.
+
+### Fixed
+- `docs/packages.txt` lists only installed packages (961), not removed ones
+  that kept their configuration files.
+- README no longer says NTC's PICO-8 package can be reinstalled; it needs
+  `libcurl3`, which Debian 10 does not have.
+
 ## [0.1.0] - 2026-10-06
 
 Pre-release: the image is built from a verified device but has not been
