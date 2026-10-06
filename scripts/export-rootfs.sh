@@ -33,7 +33,9 @@ log() { echo "==> $*"; }
 FORBIDDEN_REGEX="${FORBIDDEN_REGEX:-$PRIVATE_USER}"
 
 cleanup() {
-    mountpoint -q "$BIND" 2>/dev/null && umount "$BIND" || true
+    if mountpoint -q "$BIND" 2>/dev/null; then
+        umount "$BIND" || true
+    fi
 }
 trap cleanup EXIT
 

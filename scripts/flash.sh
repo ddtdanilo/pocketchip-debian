@@ -43,8 +43,8 @@ while [ $# -gt 0 ]; do
     esac
 done
 
-[ -n "$UBI" ] && [ -f "$UBI" ] || die "--ubi <file> is required and must exist"
-[ -n "$BOOTDIR" ] && [ -d "$BOOTDIR" ] || die "--bootloader-dir <dir> is required and must exist"
+[ -f "$UBI" ] || die "--ubi <file> is required and must exist"
+[ -d "$BOOTDIR" ] || die "--bootloader-dir <dir> is required and must exist"
 for tool in "$FEL" "$FASTBOOT" "$MKIMAGE"; do
     command -v "$tool" >/dev/null || die "$tool not found (see docs/flashing.md)"
 done
@@ -108,8 +108,9 @@ cat "$TMP/nand-info.txt"
 nand_erasesize="$(sed -n 's/^nand_erasesize=//p' "$TMP/nand-info.txt")"
 nand_writesize="$(sed -n 's/^nand_writesize=//p' "$TMP/nand-info.txt")"
 nand_oobsize="$(sed -n 's/^nand_oobsize=//p' "$TMP/nand-info.txt")"
-[ -n "$nand_erasesize" ] && [ -n "$nand_writesize" ] && [ -n "$nand_oobsize" ] \
-    || die "could not read the NAND geometry"
+if [ -z "$nand_erasesize" ] || [ -z "$nand_writesize" ] || [ -z "$nand_oobsize" ]; then
+    die "could not read the NAND geometry"
+fi
 
 case "$nand_oobsize" in
     680) variant="hynix-8g" ;;
