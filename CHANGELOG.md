@@ -15,8 +15,6 @@ All notable changes to this project are documented here. The format follows
 - `docs/gpu.md`.
 
 ### Fixed
-- `docs/packages.txt` lists only installed packages (961), not removed ones
-  that kept their configuration files.
 - README no longer says NTC's PICO-8 package can be reinstalled; it needs
   `libcurl3`, which Debian 10 does not have.
 
